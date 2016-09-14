@@ -67,9 +67,9 @@ function getTone(text, callback) {
         console.log(err);
         callback(null);
       } else {
-        let toneArray = tone.document_tone.tone_categories[0].tones;
+        var toneArray = tone.document_tone.tone_categories[0].tones;
         
-        let tones = toneArray.reduce(function(result, item) {
+        var tones = toneArray.reduce(function(result, item) {
           result[item.tone_name] = item.score;
           return result;
         }, {});
