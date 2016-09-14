@@ -17,19 +17,35 @@ var T = new Twit({
 });
 
 app.get('/tweets/:userName', (req, res) => {
+
   getTweets(req.params.userName, (tweets) => {
     res.json(tweets);
-  })
+  });
+
 });
 
 app.get('/tone/:text', (req, res) => {
+
   getTone(req.params.text, (toneScores) => {
     res.json(toneScores);
   });
+
+});
+
+app.get('/tweetTone/:userName', (req, res) => {
+
+  getTweets(req.params.userName, (tweets) => {
+
+    getTone(tweets.join(" ") || " ", (tone) => {
+      res.json(tone);
+    });
+
+  });
+
 });
 
 function getTweets(userName, callback){
-  var tweets = [];
+
   T.get('statuses/user_timeline', { screen_name: userName, count: 20 }, function(err, data, response) {
     return data
   }).then(function(res){
@@ -39,10 +55,10 @@ function getTweets(userName, callback){
     console.log('something went wrong');
     callback(err)
   });
+
 };
 
 function getTone(text, callback) {
-  var tone = [];
 
   tone_analyzer.tone({ text: text }, function(err, tone) {
       if (err) {
@@ -52,9 +68,11 @@ function getTone(text, callback) {
         callback(tone.document_tone.tone_categories[0]);
       }
   });
+
 };
 
 var port = process.env.PORT || 3000;
+
 app.listen(port, function(){
   console.log("Express server listening on port %d in %s mode", port, app.settings.env || 'default');
 });
