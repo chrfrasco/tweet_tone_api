@@ -16,6 +16,8 @@ var T = new Twit({
   , access_token_secret:  'y1fG9M2CcNOjU6NID6tSkcyOV5dS6xEcc8THsevKvCxpb' // Your Access Token Secret
 });
 
+app.get('/', (req, res) => res.send('hello :)'))
+
 app.get('/tweets/:userName', (req, res) => {
 
   getTweets(req.params.userName, (tweets) => {
@@ -46,7 +48,7 @@ app.get('/tweetTone/:userName', (req, res) => {
 
 function getTweets(userName, callback){
 
-  T.get('statuses/user_timeline', { screen_name: userName, count: 20 }, function(err, data, response) {
+  T.get('statuses/user_timeline', { screen_name: userName, count: 50 }, function(err, data, response) {
     return data
   }).then(function(res){
     tweets = res.data.map((obj) => obj.text);
@@ -65,7 +67,14 @@ function getTone(text, callback) {
         console.log(err);
         callback(null);
       } else {
-        callback(tone.document_tone.tone_categories[0]);
+        let toneArray = tone.document_tone.tone_categories[0].tones;
+        
+        let tones = toneArray.reduce(function(result, item) {
+          result[item.tone_name] = item.score;
+          return result;
+        }, {});
+
+        callback(tones);
       }
   });
 
