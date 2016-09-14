@@ -10,8 +10,10 @@ const T = new Twit({
 });
 
 app.get('/', (req, res) => {
-  console.log('someone connected.')
+  res.send('hello :)')
 })
+
+app.listen()
 
 function getTweets(userName, callback){
   let tweets = [];
@@ -30,3 +32,15 @@ function getTweets(userName, callback){
 getTweets('aesilyroesrbfowboerf2q37fq7437bf', (res) => {
   console.log(res);
 })
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(errorHandler({ dumpExceptions: true, showStack: true }));
+} else {
+  app.use(errorHandler());
+}
+
+
+var port = process.env.PORT || 3000;
+app.listen(port, function(){
+  console.log("Express server listening on port %d in %s mode", process.env.PORT, app.settings.env);
+});
