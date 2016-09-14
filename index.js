@@ -42,10 +42,15 @@ app.get('/tone/:text', (req, res) => {
 
 app.get('/tweetTone/:userName', (req, res) => {
 
-  getTweets(req.params.userName, (tweets) => {
+  getTweets(req.params.userName, (tweetInfo) => {
 
-    getTone(tweets.join(" ") || " ", (tone) => {
-      res.json(tone);
+    getTone(tweetInfo.tweets.join(" ") || " ", (tone) => {
+      var results = {};
+
+      results.tone = tone;
+      results.tweetInfo = tweetInfo;
+
+      res.json(results);
     });
 
   });
@@ -55,13 +60,24 @@ app.get('/tweetTone/:userName', (req, res) => {
 function getTweets(userName, callback){
 
   T.get('statuses/user_timeline', { screen_name: userName, count: 50 }, function(err, data, response) {
-    return data
-  }).then(function(res){
-    tweets = res.data.map((obj) => obj.text);
-    callback(tweets)
+    return data;
+  }).then(function(res1){
+    T.get(`users/show`, {screen_name: userName}, function(err, data, response) {
+      return data
+    }).then(function(res2){
+      var tweetInfo = {};
+
+      tweetInfo.tweets = res1.data.map((obj) => obj.text);
+      tweetInfo.userName = userName;
+      tweetInfo.profileImage = res2.data.profile_image_url;
+
+      callback(tweetInfo);
+    }, function(err){
+
+    })
   }, function(err){
     console.log('something went wrong');
-    callback(err)
+    callback(err);
   });
 
 };
