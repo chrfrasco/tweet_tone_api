@@ -1,8 +1,8 @@
-const Twit = require('twit');
-const express = require('express');
+var Twit = require('twit');
+var express = require('express');
 
-const app = express();
-const T = new Twit({
+var app = express();
+var T = new Twit({
     consumer_key:         'tztKPgrTWnYWtzw2nhG6NCHuq' // Your Consumer Key
   , consumer_secret:      'aq54IuJvBqsALvbdJqwtVuiu8a2UCfqIRq88dYse5shLBCilIB' // Your Consumer Secret
   , access_token:         '712458805678882816-UqnywRq03FVCEioqAHWanQDJcrcqJpQ' // Your Access Token
@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 app.listen()
 
 function getTweets(userName, callback){
-  let tweets = [];
+  var tweets = [];
   T.get('statuses/user_timeline', { screen_name: userName, count: 20 }, function(err, data, response) {
     return data
   }).then(function(res){
@@ -38,7 +38,6 @@ if (process.env.NODE_ENV !== "production") {
 } else {
   app.use(errorHandler());
 }
-
 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
