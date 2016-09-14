@@ -9,8 +9,10 @@ var T = new Twit({
   , access_token_secret:  'y1fG9M2CcNOjU6NID6tSkcyOV5dS6xEcc8THsevKvCxpb' // Your Access Token Secret
 });
 
-app.get('/', (req, res) => {
-  res.send('hello :)')
+app.get('/tweets', (req, res) => {
+  getTweets('lorde', (tweets) => {
+    res.json(tweets);
+  })
 })
 
 app.listen()
@@ -28,10 +30,6 @@ function getTweets(userName, callback){
     callback(err)
   });
 }
-
-getTweets('aesilyroesrbfowboerf2q37fq7437bf', (res) => {
-  console.log(res);
-})
 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
