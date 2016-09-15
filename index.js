@@ -66,14 +66,17 @@ function getTweets(userName, callback){
       return data
     }).then(function(res2){
       var tweetInfo = {};
-
-      tweetInfo.tweets = res1.data.map((obj) => obj.text);
-      tweetInfo.userName = userName;
-      tweetInfo.profileImage = res2.data.profile_image_url;
-
-      callback(tweetInfo);
+      try {
+        tweetInfo.tweets = res1.data.map((obj) => obj.text);
+        tweetInfo.userName = userName;
+        tweetInfo.profileImage = res2.data.profile_image_url;
+        callback(tweetInfo);
+      } catch (err){
+        callback(err)
+      }
+      
     }, function(err){
-
+      callback(err)
     })
   }, function(err){
     console.log('something went wrong');
