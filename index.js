@@ -1,19 +1,20 @@
 var Twit = require('twit');
 var express = require('express');
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
+var api_keys = JSON.parse(require('./api_keys.json'));
 
 var tone_analyzer = new ToneAnalyzerV3({
-  password: "w2KJEDvzYCDV",
-  username: "1139fb5b-c827-46b4-aeff-a774419c23fc",
+  password: api_keys.watson.password,
+  username: api_keys.watson.username,
   version_date: '2016-05-19'
 });
 
 var app = express();
 var T = new Twit({
-    consumer_key:         'tztKPgrTWnYWtzw2nhG6NCHuq' // Your Consumer Key
-  , consumer_secret:      'aq54IuJvBqsALvbdJqwtVuiu8a2UCfqIRq88dYse5shLBCilIB' // Your Consumer Secret
-  , access_token:         '712458805678882816-UqnywRq03FVCEioqAHWanQDJcrcqJpQ' // Your Access Token
-  , access_token_secret:  'y1fG9M2CcNOjU6NID6tSkcyOV5dS6xEcc8THsevKvCxpb' // Your Access Token Secret
+    consumer_key:         api_keys.twitter.consumer_key,
+    consumer_secret:      api_keys.twitter.consumer_secret,
+    access_token:         api_keys.twitter.access_token,
+    access_token_secret:  api_keys.twitter.access_token_secret
 });
 
 app.use((req, res, next) => {
