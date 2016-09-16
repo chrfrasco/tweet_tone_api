@@ -22,7 +22,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => res.send('hello :)'))
+app.get('/', (req, res) => res.sendfile('index.html'))
 
 app.get('/tweets/:userName', (req, res) => {
 
